@@ -153,10 +153,20 @@ Setelah mutasi (create/patch/delete), panggil `queryClient.invalidateQueries({ q
 | Auth (login/register/profil/logout) | ✅ Berfungsi |
 | Buku — daftar, cari, tambah, hapus | ✅ Berfungsi |
 | Penulis / Penerbit / Kategori (CRUD penuh) | ✅ Berfungsi (via `ResourceCrud` generik) |
-| Reading Log (semua operasi) | 🟡 Placeholder (API sudah siap di `readingLogsApi.js`) |
+| Reading Log (daftar, filter, tambah, naikkan status, hapus) | ✅ Berfungsi |
+| Menurunkan status reading log | ⚠️ Tidak didukung backend (lihat catatan di bawah) |
 | Edit (PATCH) buku di UI | ⏳ Belum (master-data sudah bisa edit) |
 
 Fungsi API untuk **semua** endpoint sudah tersedia. Master-data (penulis/penerbit/kategori) memakai komponen generik `src/components/ResourceCrud.jsx` — halaman baru cukup memanggilnya dengan konfigurasi field.
+
+### ⚠️ Keterbatasan backend: pengosongan field pada PATCH
+`ReadingLogPatchRequest` memakai penanda `x != null` untuk mendeteksi field yang dikirim, sehingga **JSON `null` dianggap "tidak diisi"**. Akibatnya tanggal (`startedAt`/`finishedAt`) dan `rating` **tidak dapat dikosongkan** lewat `PATCH` maupun `PUT`. Efeknya: **transisi status ke bawah** (mis. `DONE → READING`) ditolak `409`.
+
+UI menangani ini dengan:
+- Dropdown quick-status hanya menampilkan status **saat ini & yang lebih tinggi** (transisi naik).
+- Bila tetap dicoba, muncul pesan penjelasan, bukan error mentah.
+
+Perbaikan yang disarankan untuk backend: gunakan `Optional`/sentinel atau DTO dengan flag eksplisit agar `null` bisa berarti "kosongkan".
 
 ---
 

@@ -8,7 +8,7 @@ import { BooksPage } from '../pages/BooksPage'
 import { AuthorsPage } from '../pages/AuthorsPage'
 import { PublishersPage } from '../pages/PublishersPage'
 import { CategoriesPage } from '../pages/CategoriesPage'
-import { PlaceholderPage } from '../pages/PlaceholderPage'
+import { ReadingLogsPage } from '../pages/ReadingLogsPage'
 
 /** Rute yang butuh login; redirect ke /login bila belum auth. */
 function Protected({ children }) {
@@ -36,7 +36,7 @@ export function AppRoutes() {
       <Route path="/authors" element={<Protected><AuthorsPage /></Protected>} />
       <Route path="/publishers" element={<Protected><PublishersPage /></Protected>} />
       <Route path="/categories" element={<Protected><CategoriesPage /></Protected>} />
-      <Route path="/reading-logs" element={<Protected><PlaceholderPage title="Log Baca" /></Protected>} />
+      <Route path="/reading-logs" element={<Protected><ReadingLogsPage /></Protected>} />
 
       <Route path="/" element={<Navigate to="/books" replace />} />
       <Route path="*" element={<Navigate to="/books" replace />} />
